@@ -3,6 +3,7 @@
   "description": "ViteJS boilorplate with typescript",
   "version": "0.1.0",
   "type": "module",
+  "homepage": "https://github.com/piyushere/downshift-select",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
