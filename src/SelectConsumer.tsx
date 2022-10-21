@@ -1,7 +1,7 @@
 import React from 'react';
-import Select, { Option } from './select/Select';
+import Select, { Option, OptionRenderProps } from './Select';
 
-const books = [
+const books: Option<string>[] = [
   { label: 'Harper Lee', value: 'To Kill a Mockingbird' },
   { label: 'Lev Tolstoy', value: 'War and Peace' },
   { label: 'Fyodor Dostoyevsy', value: 'The Idiot' },
@@ -14,20 +14,38 @@ const books = [
   { label: 'Fyodor Dostoevsky', value: 'Crime and Punishment' },
 ];
 
-function SelectConsumer() {
-  const [selected, setSelected] = React.useState<Option | null>(null);
-  const selectRef = React.useRef<HTMLInputElement>(null);
+const SelectOptionRenderer = ({
+  item,
+  key,
+  isSelected,
+  isHighlighted,
+  ...restProps
+}: OptionRenderProps<Option<string>>) => {
   return (
-    <div>
+    <li
+      className={`py-2 px-3 shadow-sm flex flex-col items-start ${
+        isHighlighted && 'bg-blue-300'
+      } ${isSelected && 'bg-blue-500 text-gray-50'}`}
+      key={key}
+      {...restProps}
+    >
+      <span>{item.value}</span>
+    </li>
+  );
+};
+
+function SelectConsumer() {
+  const [selected, setSelected] = React.useState<Option<string> | null>(null);
+
+  return (
+    <div className="p-5">
       <Select
         value={selected}
-        setValue={setSelected}
+        onChange={setSelected}
         options={books}
-        ref={selectRef}
+        labeler={(x) => x?.value || ''}
+        renderOption={SelectOptionRenderer}
       />
-      <button type="button" onClick={() => selectRef.current?.focus()}>
-        focus on select
-      </button>
     </div>
   );
 }
